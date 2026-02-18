@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+
+# Uploads (keep folder, ignore files)
+backend/app/uploads/*
+!backend/app/uploads/.gitkeep
+
+# Node
+node_modules/
+frontend/dist/
+frontend/.env
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
