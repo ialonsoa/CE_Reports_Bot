@@ -37,3 +37,4 @@ class GeneratedReport(BaseModel):
     generated_at: datetime
     based_on_templates: list[str]
     based_on_activity: Optional[ActivitySummary] = None
+    email_sent: bool = False

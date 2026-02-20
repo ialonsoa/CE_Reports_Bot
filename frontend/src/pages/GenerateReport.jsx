@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Sparkles, Copy, Check, Send } from 'lucide-react'
+import { Sparkles, Copy, Check, MailCheck, MailX } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { generateReport } from '../services/api'
 
@@ -19,17 +19,24 @@ export default function GenerateReport() {
   const [reportType, setReportType] = useState('daily')
   const [tone, setTone] = useState('professional')
   const [notes, setNotes] = useState('')
-  const [result, setResult] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [copied, setCopied] = useState(false)
+  const [result, setResult]       = useState('')
+  const [emailSent, setEmailSent] = useState(null)   // null | true | false
+  const [loading, setLoading]     = useState(false)
+  const [copied, setCopied]       = useState(false)
 
   const handleGenerate = async () => {
     setLoading(true)
     setResult('')
+    setEmailSent(null)
     try {
       const res = await generateReport({ report_type: reportType, tone, additional_notes: notes })
       setResult(res.data.content)
-      toast.success('Report generated!')
+      setEmailSent(res.data.email_sent)
+      if (res.data.email_sent) {
+        toast.success('Report generated & emailed!')
+      } else {
+        toast.success('Report generated! (Email not configured)')
+      }
     } catch (e) {
       const detail = e.response?.data?.detail || e.message
       toast.error(`Generation failed: ${detail}`)
@@ -119,7 +126,18 @@ export default function GenerateReport() {
         <div className="bg-white border border-gray-200 rounded-xl p-5">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-semibold text-gray-800">Generated Report</h3>
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
+              {/* Email status badge */}
+              {emailSent === true && (
+                <span className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg">
+                  <MailCheck size={14} /> Sent to ialonsoa@byu.edu
+                </span>
+              )}
+              {emailSent === false && (
+                <span className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg">
+                  <MailX size={14} /> Email not configured
+                </span>
+              )}
               <button
                 onClick={handleCopy}
                 className="flex items-center gap-1.5 px-3 py-1.5 text-sm border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
@@ -127,12 +145,6 @@ export default function GenerateReport() {
                 {copied ? <Check size={14} className="text-green-500" /> : <Copy size={14} />}
                 {copied ? 'Copied!' : 'Copy'}
               </button>
-              <a
-                href={`mailto:?subject=Daily Report&body=${encodeURIComponent(result)}`}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition-colors"
-              >
-                <Send size={14} /> Send via Email
-              </a>
             </div>
           </div>
           <pre className="whitespace-pre-wrap text-sm text-gray-700 leading-relaxed font-sans">{result}</pre>

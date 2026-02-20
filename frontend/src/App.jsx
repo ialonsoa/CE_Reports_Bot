@@ -1,15 +1,17 @@
 import { Routes, Route, NavLink } from 'react-router-dom'
-import { LayoutDashboard, Upload, Sparkles, Activity } from 'lucide-react'
+import { LayoutDashboard, Upload, Sparkles, Activity, CalendarDays } from 'lucide-react'
 import Dashboard from './pages/Dashboard'
 import UploadReports from './pages/UploadReports'
 import GenerateReport from './pages/GenerateReport'
 import ActivityMonitor from './pages/ActivityMonitor'
+import Schedule from './pages/Schedule'
 
 const navItems = [
-  { to: '/',          label: 'Dashboard',   icon: LayoutDashboard },
-  { to: '/upload',    label: 'Upload Reports', icon: Upload },
-  { to: '/generate',  label: 'Generate',    icon: Sparkles },
-  { to: '/activity',  label: 'Activity',    icon: Activity },
+  { to: '/',          label: 'Dashboard',      icon: LayoutDashboard },
+  { to: '/upload',    label: 'Upload Reports',  icon: Upload },
+  { to: '/generate',  label: 'Generate',        icon: Sparkles },
+  { to: '/activity',  label: 'Activity',        icon: Activity },
+  { to: '/schedule',  label: 'Schedule',        icon: CalendarDays },
 ]
 
 export default function App() {
@@ -48,10 +50,11 @@ export default function App() {
       {/* Main content */}
       <main className="flex-1 overflow-auto">
         <Routes>
-          <Route path="/"         element={<Dashboard />} />
-          <Route path="/upload"   element={<UploadReports />} />
-          <Route path="/generate" element={<GenerateReport />} />
-          <Route path="/activity" element={<ActivityMonitor />} />
+          <Route path="/"          element={<Dashboard />} />
+          <Route path="/upload"    element={<UploadReports />} />
+          <Route path="/generate"  element={<GenerateReport />} />
+          <Route path="/activity"  element={<ActivityMonitor />} />
+          <Route path="/schedule"  element={<Schedule />} />
         </Routes>
       </main>
     </div>

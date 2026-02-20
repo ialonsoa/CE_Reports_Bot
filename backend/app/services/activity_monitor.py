@@ -1,7 +1,9 @@
 """
 Monitors active applications on macOS to build a picture of daily work habits.
 Tracks which apps are in the foreground and for how long.
+On non-macOS systems (e.g. the Render Linux host) monitoring is a no-op.
 """
+import platform
 import time
 import subprocess
 import json
@@ -20,6 +22,8 @@ _is_running = False
 
 def get_active_app_macos() -> tuple[str, str]:
     """Returns (app_name, window_title) for the currently focused app on macOS."""
+    if platform.system() != "Darwin":
+        return "Unavailable", ""
     script = """
     tell application "System Events"
         set frontApp to first application process whose frontmost is true

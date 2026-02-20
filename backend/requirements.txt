@@ -16,6 +16,9 @@ openpyxl==3.1.5
 # Activity monitoring
 psutil==6.0.0
 
+# Scheduling
+APScheduler==3.10.4
+
 # Utilities
 python-dotenv==1.0.1
 aiofiles==24.1.0
